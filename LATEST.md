@@ -1,5 +1,5 @@
 
-### Bug Fixes
+### Features
 
-* removing unused dependencies ([82fb482](https://github.com/aversini/teeny-perf/commit/82fb482c206a85d0103b46a8f7e2818d636fc8c4))
+* adding Benchmark class ([2769288](https://github.com/aversini/teeny-perf/commit/2769288cafaec1f9809c868190c19181c78640c3))
 
