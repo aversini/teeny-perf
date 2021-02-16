@@ -11,6 +11,7 @@
 
 - [Installation](#installation)
 - [API](#api)
+  - [Benchmark](#benchmark)
   - [Performance](#performance)
 - [License](#license)
 
@@ -22,6 +23,52 @@
 ```
 
 ## API
+
+### Benchmark
+
+Benchmark is a class that provides a simple benchmarking tool for node, relying on the [nodejs Performance measurement APIs](https://nodejs.org/api/perf_hooks.html).
+
+#### Method
+
+**async run(functions, arguments, iterations, totalSamples)**
+
+| Argument     | Description        | Default | Description                            |
+| ------------ | ------------------ | ------- | -------------------------------------- |
+| functions    | Array of functions |         | All the functions to test              |
+| arguments    | Array of functions |         | The arguments to pass to each function |
+| iterations   | number             | 1       | Total time each function should run    |
+| totalSamples | number             | 1       | Total time each run should be averaged |
+
+#### Getter
+
+| Getter              | Type            | Description                                      |
+| ------------------- | --------------- | ------------------------------------------------ |
+| results             | Array of Object |                                                  |
+| results[].duration  | Number          | Time in milliseconds                             |
+| results[].id        | String          | Unique identifier (usually name of the function) |
+| results[].totalRuns | Number          | How many time the function ran                   |
+
+#### Examples
+
+```js
+const { Benchmark } = require("teeny-js-utilities");
+const bench = new Benchmark();
+
+const fct1 = (a, b, c) => {
+  /* very long running function */
+};
+const fct2 = (a, b, c) => {
+  /* very long running function */
+};
+
+await bench.run([fct1, fct2], [111, false, "333"], 1000, 10);
+// -> benchmark is running...
+// the results can be found in the Benchmark class getter `results`:
+
+bench.results.forEach((result) => {
+  console.log(`Function ${result.id} average: ${result.duration}ms`);
+});
+```
 
 ### Performance
 

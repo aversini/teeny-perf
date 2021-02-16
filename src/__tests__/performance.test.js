@@ -14,17 +14,17 @@ describe("when testing for Performance with no logging side-effects", () => {
   it("should report basic performance data", async () => {
     const perf = new Performance();
     perf.start();
-    await new Promise((res) =>
+    await new Promise((resolve) =>
       setTimeout(async () => {
+        resolve();
         perf.stop();
         expect(perf.results.duration).toBeGreaterThanOrEqual(500);
-        res();
         perf.start();
-        await new Promise((res) =>
+        await new Promise((resolve) =>
           setTimeout(() => {
+            resolve();
             perf.stop();
             expect(perf.results.duration).toBeGreaterThanOrEqual(1000);
-            res();
           }, 1000)
         );
       }, 500)
