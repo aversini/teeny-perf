@@ -32,6 +32,12 @@ describe("when testing for Performance with no logging side-effects", () => {
   });
 });
 
+describe("when testing for performance.now polyfill", () => {
+  it("should be available as a static method", async () => {
+    expect(Performance.now()).toBeGreaterThan(0);
+  });
+});
+
 /**
  * Some utilities have logging capabilities that needs to be
  * tested a little bit differently:

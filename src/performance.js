@@ -4,6 +4,11 @@ const TeenyLogger = require("teeny-logger");
 const logger = new TeenyLogger({
   boring: process.env.NODE_ENV === "test",
 });
+const SEC_TO_NANOSEC = 1e9;
+
+const moduleLoadTimeNS = Number(process.hrtime.bigint());
+const upTimeNS = process.uptime() * SEC_TO_NANOSEC;
+const nodeLoadTimeNS = moduleLoadTimeNS - upTimeNS;
 
 class Performance {
   constructor() {
@@ -45,6 +50,16 @@ class Performance {
     }
   }
 
+  /**
+   * This static method "tries" to replicate the browser equivalent of the
+   * performance.now() method that returns a DOMHighResTimeStamp,
+   * measured in milliseconds.
+   * NOTE: in this case, it's actually returning nanoseconds.
+   */
+  static now() {
+    return Number(process.hrtime.bigint()) - nodeLoadTimeNS;
+  }
+
   get results() {
     return {
       duration: this.perfData.duration || null,
@@ -52,4 +67,6 @@ class Performance {
   }
 }
 
-module.exports = Performance;
+module.exports = {
+  Performance,
+};
