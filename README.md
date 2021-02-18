@@ -12,6 +12,7 @@
 - [Installation](#installation)
 - [API](#api)
   - [Benchmark](#benchmark)
+  - [HighResTimer](#highrestimer)
   - [Performance](#performance)
 - [License](#license)
 
@@ -32,7 +33,7 @@ Benchmark is a class that provides a simple benchmarking tool for node, relying 
 
 **async run(functions, arguments, iterations, totalSamples)**
 
-| Argument     | Description        | Default | Description                            |
+| Argument     | Type               | Default | Description                            |
 | ------------ | ------------------ | ------- | -------------------------------------- |
 | functions    | Array of functions |         | All the functions to test              |
 | arguments    | Array of functions |         | The arguments to pass to each function |
@@ -68,6 +69,54 @@ await bench.run([fct1, fct2], [111, false, "333"], 1000, 10);
 bench.results.forEach((result) => {
   console.log(`Function ${result.id} average: ${result.duration}ms`);
 });
+```
+
+### HighResTimer
+
+HighResTimer is a class that provides a high-resolution timer based on `process.hrtime.bigint()` and a nodejs polyfill for `window.requestAnimationFrame()`.
+
+#### Constructor
+
+The constructor requires a number: the time in milliseconds for the timer to run.
+
+#### Methods
+
+| Method | Description                             |
+| ------ | --------------------------------------- |
+| start  | Start the timer                         |
+| cancel | Cancel the timer before its time is due |
+
+#### Events
+
+| Name           | Description                              |
+| -------------- | ---------------------------------------- |
+| EVENT_CANCEL   | Event sent when the timer is cancelled   |
+| EVENT_COMPLETE | Event sent when the timer has terminated |
+| EVENT_START    | Event sent when the timer starts         |
+| EVENT_TICK     | Event sent at each process.tick          |
+
+#### Examples
+
+```js
+const {
+  HighResTimer,
+  EVENT_START,
+  EVENT_TICK,
+  EVENT_COMPLETE,
+} = require("teeny-perf");
+
+const timer = new HighResTimer(250);
+timer
+  .on(EVENT_START, () => {
+    console.log("-> Timer has started");
+  })
+  .on(EVENT_TICK, () => {
+    console.log("-> tick...");
+  })
+  .on(EVENT_COMPLETE, () => {
+    console.log("-> Timer is done!");
+  })
+  .start();
 ```
 
 ### Performance

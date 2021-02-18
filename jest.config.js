@@ -21,7 +21,11 @@ module.exports = {
    *
    * Default undefined
    */
-  collectCoverageFrom: ["src/**/*.js", "!src/__tests__/**/*.*"],
+  collectCoverageFrom: [
+    "src/**/*.js",
+    "!src/__tests__/**/*.*",
+    "!src/requestAnimationFrame.js",
+  ],
 
   /**
    * The directory where Jest should output its coverage files.

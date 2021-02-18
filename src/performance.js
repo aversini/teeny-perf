@@ -54,7 +54,16 @@ class Performance {
    * This static method "tries" to replicate the browser equivalent of the
    * performance.now() method that returns a DOMHighResTimeStamp,
    * measured in milliseconds.
-   * NOTE: in this case, it's actually returning nanoseconds.
+   *
+   * NOTE: in this polyfill, it's actually returning nanoseconds.
+   *
+   * According to the [High Resolution Time specification](http://www.w3.org/TR/hr-time/),
+   * the number of milliseconds reported by performance.now should be relative
+   * to the value of performance.timing.navigationStart.
+   *
+   * In this polyfill, it is in nanoseconds and it is relative to the time the
+   * current Node process has started (inferred from process.uptime()).
+   *
    */
   static now() {
     return Number(process.hrtime.bigint()) - nodeLoadTimeNS;
