@@ -58,6 +58,12 @@ module.exports = {
       lines: 100,
       statements: 100,
     },
+    "src/benchmark.js": {
+      branches: 86,
+      functions: 84,
+      lines: 91,
+      statements: 89,
+    },
   },
 
   /**
@@ -101,6 +107,17 @@ module.exports = {
   setupFilesAfterEnv: [
     path.join(__dirname, "configuration/jest/before-all-env.js"),
   ],
+
+  /**
+   * The test environment that will be used for testing. The default environment
+   * in Jest is a browser-like environment through jsdom. If you are building
+   * a node service, you can use the node option to use a node-like
+   * environment instead.
+   * @type {String}
+   *
+   * Default "jsdom"
+   */
+  testEnvironment: "node",
 
   /**
    * The glob patterns Jest uses to detect test files. By default

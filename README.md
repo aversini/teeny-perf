@@ -27,48 +27,72 @@
 
 ### Benchmark
 
-Benchmark is a class that provides a simple benchmarking tool for node, relying on the [nodejs Performance measurement APIs](https://nodejs.org/api/perf_hooks.html).
+Benchmark is a class that provides a simple benchmarking tool for node, relying on the original [benchmark module](https://www.npmjs.com/package/benchmark) that use to power the now-defunct [jsPerf](https://jsperf.com/) website, and heavily inspired by the great [benny](https://www.npmjs.com/package/benny).
 
-#### Method
+#### Constructor
 
-**async run(functions, arguments, iterations, totalSamples)**
+The constructor requires a string: the name for the benchmark suite.
+It also takes an optional second argument: an object defining if the test should be verbose (default) or not.
 
-| Argument     | Type               | Default | Description                            |
-| ------------ | ------------------ | ------- | -------------------------------------- |
-| functions    | Array of functions |         | All the functions to test              |
-| arguments    | Array of functions |         | The arguments to pass to each function |
-| iterations   | number             | 1       | Total time each function should run    |
-| totalSamples | number             | 1       | Total time each run should be averaged |
+To make a test silent, instantiate a benchmark suite as follows:
 
-#### Getter
+```js
+const { Benchmark } = require("teeny-js-utilities");
+const bench = new Benchmark("My test suite", { verbose: false });
+```
 
-| Getter              | Type            | Description                                      |
-| ------------------- | --------------- | ------------------------------------------------ |
-| results             | Array of Object |                                                  |
-| results[].duration  | Number          | Time in milliseconds                             |
-| results[].id        | String          | Unique identifier (usually name of the function) |
-| results[].totalRuns | Number          | How many time the function ran                   |
+#### Methods
+
+**add(name, function)**
+
+Adds a test to the suite.
+
+| Argument | Type     | Default | Description          |
+| -------- | -------- | ------- | -------------------- |
+| name     | string   |         | the name of the test |
+| function | Function |         | The function to run  |
+
+**async run() => {results}**
+
+Runs the Benchmark suite.
 
 #### Examples
 
 ```js
 const { Benchmark } = require("teeny-js-utilities");
-const bench = new Benchmark();
+const bench = new Benchmark("My test suite");
 
-const fct1 = (a, b, c) => {
-  /* very long running function */
-};
-const fct2 = (a, b, c) => {
-  /* very long running function */
-};
-
-await bench.run([fct1, fct2], [111, false, "333"], 1000, 10);
-// -> benchmark is running...
-// the results can be found in the Benchmark class getter `results`:
-
-bench.results.forEach((result) => {
-  console.log(`Function ${result.id} average: ${result.duration}ms`);
+bench.add("Regex", () => {
+  /o/.test("Hello World!");
 });
+bench.add("IndexOf", () => {
+  "Hello World!".indexOf("o") > -1;
+});
+// if setup is required, the test should be wrapped
+bench.add("Cached Regex", () => {
+  // Some setup:
+  const re = /o/;
+  // Benchmarked code wrapped in a function:
+  return () => re.test("Hello World!");
+});
+
+const results = bench.run();
+
+/**
+ * Because the test suite is verbose by default, it would
+ * print something like:
+ *
+ * ┌──────────────┬─────────────┬────────────────┬─────────────────┬─────────┐
+ * │ Name         │     Ops/sec │ Percent slower │ Margin of error │    Rank │
+ * ├──────────────┼─────────────┼────────────────┼─────────────────┼─────────┤
+ * │ Regex        │  49,106,105 │         94.65% │          ±1.16% │ Slowest │
+ * ├──────────────┼─────────────┼────────────────┼─────────────────┼─────────┤
+ * │ IndexOf      │ 917,842,104 │             0% │          ±1.26% │ Fastest │
+ * ├──────────────┼─────────────┼────────────────┼─────────────────┼─────────┤
+ * │ Cached Regex │  56,337,056 │         93.86% │          ±1.16% │         │
+ * └──────────────┴─────────────┴────────────────┴─────────────────┴─────────┘
+ *
+ */
 ```
 
 ### HighResTimer
