@@ -18,13 +18,13 @@ describe("when testing for Performance with no logging side-effects", () => {
       setTimeout(async () => {
         resolve();
         perf.stop();
-        expect(perf.results.duration).toBeGreaterThanOrEqual(500);
+        expect(perf.results.duration).toBeGreaterThanOrEqual(499);
         perf.start();
         await new Promise((resolve) =>
           setTimeout(() => {
             resolve();
             perf.stop();
-            expect(perf.results.duration).toBeGreaterThanOrEqual(1000);
+            expect(perf.results.duration).toBeGreaterThanOrEqual(999);
           }, 1000)
         );
       }, 500)
