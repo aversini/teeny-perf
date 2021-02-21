@@ -37,7 +37,7 @@ It also takes an optional second argument: an object defining if the test should
 To make a test silent, instantiate a benchmark suite as follows:
 
 ```js
-const { Benchmark } = require("teeny-js-utilities");
+const { Benchmark } = require("teeny-perf");
 const bench = new Benchmark("My test suite", { verbose: false });
 ```
 
@@ -59,7 +59,7 @@ Runs the Benchmark suite.
 #### Examples
 
 ```js
-const { Benchmark } = require("teeny-js-utilities");
+const { Benchmark } = require("teeny-perf");
 const bench = new Benchmark("My test suite");
 
 bench.add("Regex", () => {
