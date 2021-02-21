@@ -47,14 +47,14 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@arrows/composition": "^1.0.0",
-    "@arrows/dispatch": "^1.0.2",
+    "@arrows/composition": "1.2.2",
+    "@arrows/dispatch": "1.0.3",
     "benchmark": "2.1.4",
     "cli-table3": "0.6.0",
     "kleur": "4.1.4",
     "pretty-error": "3.0.3",
     "teeny-js-utilities": "^3.0.0",
-    "teeny-logger": "^0.2.0",
+    "teeny-logger": "^1.0.0",
     "stats-median": "1.0.1"
   }
 }
