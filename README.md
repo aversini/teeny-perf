@@ -76,7 +76,9 @@ bench.add("Cached Regex", () => {
   return () => re.test("Hello World!");
 });
 
-const results = bench.run();
+(async () => {
+  const results = await bench.run();
+})();
 
 /**
  * Because the test suite is verbose by default, it would
