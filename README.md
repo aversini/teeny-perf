@@ -7,6 +7,8 @@
 
 > Performance and benchmarking utilities for Node
 
+**DEPRECATION NOTICE:** For newer Node versions support, please use https://github.com/aversini/node-cli/tree/main/packages/perf
+
 ## Table of Content
 
 - [Installation](#installation)
